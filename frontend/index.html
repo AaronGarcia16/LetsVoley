@@ -3,21 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Let's Voley</title>
+  <title>Let's Voley - Inicio</title>
   <link rel="stylesheet" href="css/styles.css">
+  <!-- Leaflet CSS para el mapa -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-oF8Tks6b91t9D31b4ag+4GS5k9yM5c6E3/1l5eud7VU=" crossorigin=""/>
 </head>
-<body>
-  <header>
-    <h1>Let's Voley</h1>
-    <nav>
-      <a href="partidos.html">Partidos</a>
-      <a href="jugadores.html">Jugadores</a>
-      <a href="perfil.html">Mi Perfil</a>
+
+<body class="min-h-screen bg-gradient-to-b from-cyan-200 via-cyan-100 to-orange-50 font-sans flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-cyan-400 text-white py-4 px-8 flex justify-between items-center shadow-lg">
+    <div class="flex items-center space-x-3">
+      <span class="text-3xl">🏐</span>
+      <h1 class="text-2xl font-bold">Let's Voley</h1>
+    </div>
+    <nav class="space-x-8 text-lg">
+      <a href="index.html" class="hover:underline">Inicio</a>
+      <a href="partidos.html" class="hover:underline">Partidos</a>
+      <a href="jugadores.html" class="hover:underline">Jugadores</a>
+      <a href="perfil.html" class="hover:underline">Mi Perfil</a>
     </nav>
   </header>
-  <main>
-    <h2>Bienvenido a Let's Voley</h2>
+
+  <!-- Contenido principal -->
+  <main class="flex-grow p-8 flex flex-col items-center text-center">
+    <h2 class="text-4xl font-bold text-blue-800 mb-6">¡Bienvenido a Let's Voley!</h2>
+    <p class="text-lg text-gray-700 mb-8 max-w-2xl">
+      Encuentra y únete a partidos de vóley playa en las mejores playas de Mallorca.  
+      ¡Juega, conoce gente nueva y disfruta del sol! ☀️🏐
+    </p>
+
+    <!-- Mapa -->
+    <div id="map" class="w-full max-w-5xl rounded-2xl shadow-xl" style="height: 500px;"></div>
   </main>
-  <footer>© 2025 Let's Voley.</footer>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 text-gray-600 text-center text-sm py-4 mt-12">
+    © 2025 Let's Voley · Todos los derechos reservados
+  </footer>
+
+  <!-- Leaflet JS para mapas -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-GZCkYJ6/YeBhQHi+Ol0xskTQ5tjsLh0GulvMGfFKr0M=" crossorigin=""></script>
+
+  <!-- Script para inicializar el mapa -->
+  <script>
+    const map = L.map('map').setView([39.6, 2.9], 9); // Mallorca
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Marcar playas famosas
+    const playas = [
+      { nombre: "Playa de Palma", coords: [39.5315, 2.7380] },
+      { nombre: "Can Pere Antoni", coords: [39.5685, 2.6537] },
+      { nombre: "Magaluf Beach", coords: [39.5091, 2.5379] },
+      { nombre: "Playa de Alcúdia", coords: [39.8532, 3.1214] },
+      { nombre: "Playa de Muro", coords: [39.7947, 3.1290] }
+    ];
+
+    playas.forEach(playa => {
+      L.marker(playa.coords)
+        .addTo(map)
+        .bindPopup(`<strong>${playa.nombre}</strong>`);
+    });
+  </script>
+
 </body>
 </html>
