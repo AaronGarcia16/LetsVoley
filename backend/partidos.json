@@ -1,0 +1,26 @@
+[
+  {
+    "lugar": "3digits",
+    "fecha": "2025-04-30",
+    "hora": "12:12",
+    "nivel": "Avanzado",
+    "comentario": "test",
+    "creador": "aarongm.168@gmail.com"
+  },
+  {
+    "lugar": "3digits",
+    "fecha": "2025-05-09",
+    "hora": "12:12",
+    "nivel": "Avanzado",
+    "comentario": "",
+    "creador": "aarongm.168@gmail.com"
+  },
+  {
+    "lugar": "3digits",
+    "fecha": "2025-05-10",
+    "hora": "12:12",
+    "nivel": "Avanzado",
+    "comentario": "",
+    "creador": "marti"
+  }
+]

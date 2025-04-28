@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil - Let's Voley</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body class="min-h-screen bg-gradient-to-b from-cyan-200 via-cyan-100 to-orange-50 font-sans flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-cyan-400 text-white py-4 px-8 flex justify-between items-center shadow-lg">
+    <div class="flex items-center space-x-3">
+      <span class="text-3xl">🏐</span>
+      <h1 class="text-2xl font-bold">Let's Voley</h1>
+    </div>
+    <nav class="space-x-8 text-lg">
+      <a href="partidos.html" class="hover:underline">Partidos</a>
+      <a href="jugadores.html" class="hover:underline">Jugadores</a>
+      <a href="perfil.html" class="hover:underline">Mi Perfil</a>
+    </nav>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="flex-grow flex flex-col items-center justify-center p-8 text-center">
+    <div id="login-container">
+      <!-- Aquí aparecerá el botón de Login -->
+    </div>
+
+    <div id="profile" class="hidden bg-white bg-opacity-70 rounded-2xl shadow-xl p-8 mt-8 max-w-md transform transition-all duration-500 opacity-0 translate-y-6">
+      <h2 class="text-3xl font-bold text-blue-800 mb-4">Mi Perfil</h2>
+      <img id="user-pic" class="w-24 h-24 rounded-full mx-auto mb-4" />
+      <h3 id="user-name" class="text-xl font-semibold"></h3>
+      <p id="user-email" class="text-gray-600"></p>
+      <button onclick="signOut()" class="mt-6 bg-orange-400 hover:bg-orange-500 text-white px-6 py-2 rounded-full shadow transition">
+        Cerrar sesión
+      </button>
+      <button onclick="redirigirCrearPartido()" class="mt-4 bg-cyan-400 hover:bg-cyan-500 text-white px-6 py-2 rounded-full shadow transition">
+        Crear un nuevo partido
+      </button>      
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 text-gray-600 text-center text-sm py-4 mt-12">
+    © 2025 Let's Voley · Todos los derechos reservados
+  </footer>
+
+  <!-- Script para Google Sign-In -->
+  <script>
+    const CLIENT_ID = '367017099771-0v37rr72oqsj18tliq18polatq0ial2a.apps.googleusercontent.com'; // <-- Aquí pega tu ID de Cliente
+
+// Función para descodificar el token JWT de Google
+function parseJwt(token) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+  return JSON.parse(jsonPayload);
+}
+
+// Función que maneja el login exitoso
+function handleCredentialResponse(response) {
+  const data = parseJwt(response.credential);
+
+  // Guardamos el usuario en localStorage
+  localStorage.setItem('usuario', JSON.stringify({
+    name: data.name,
+    email: data.email,
+    picture: data.picture
+  }));
+
+  mostrarPerfil();
+}
+
+// Mostrar perfil si usuario existe
+function mostrarPerfil() {
+  const usuarioGuardado = localStorage.getItem('usuario');
+
+  if (usuarioGuardado) {
+    const usuario = JSON.parse(usuarioGuardado);
+
+    document.getElementById('user-name').textContent = usuario.name;
+    document.getElementById('user-email').textContent = usuario.email;
+    document.getElementById('user-pic').src = usuario.picture;
+
+    document.getElementById('login-container').classList.add('hidden');
+    
+    const profile = document.getElementById('profile');
+    profile.classList.remove('hidden');
+    
+    // Aquí hacemos el efecto fade-in y slide-up
+    setTimeout(() => {
+      profile.classList.remove('opacity-0', 'translate-y-6');
+      profile.classList.add('opacity-100', 'translate-y-0');
+    }, 100); // pequeño retardo para que la transición se vea
+  }
+}
+
+// Cerrar sesión
+function signOut() {
+  google.accounts.id.disableAutoSelect();
+  localStorage.removeItem('usuario');
+  location.reload(); // Recargar para volver al estado de login
+}
+
+// Inicializar al cargar la página
+window.onload = function () {
+  const usuarioGuardado = localStorage.getItem('usuario');
+
+  if (usuarioGuardado) {
+    mostrarPerfil();
+  } else {
+    google.accounts.id.initialize({
+      client_id: CLIENT_ID,
+      callback: handleCredentialResponse
+    });
+    google.accounts.id.renderButton(
+      document.getElementById('login-container'),
+      { theme: "outline", size: "large" }
+    );
+    google.accounts.id.prompt();
+  }
+}
+function redirigirCrearPartido() {
+  window.location.href = "crear.html";
+}
+  </script>
+
+</body>
+</html>
+

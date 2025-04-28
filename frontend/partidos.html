@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Let's Voley</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+  <body class="min-h-screen bg-gradient-to-b from-cyan-200 via-cyan-100 to-orange-50 font-sans flex flex-col">
+    <header class="bg-cyan-400 text-white py-4 px-8 flex justify-between items-center shadow-lg">
+      <div class="flex items-center space-x-3">
+        <span class="text-3xl">🏐</span>
+        <h1 class="text-2xl font-bold">Let's Voley</h1>
+      </div>
+      <nav class="space-x-8 text-lg">
+        <a href="partidos.html" class="hover:underline">Partidos</a>
+        <a href="jugadores.html" class="hover:underline">Jugadores</a>
+        <a href="perfil.html" class="hover:underline">Mi Perfil</a>
+      </nav>
+    </header>        
+  <main class="p-8 max-w-5xl mx-auto bg-white bg-opacity-70 rounded-2xl shadow-xl mt-12">
+    <h2 class="text-4xl font-bold text-blue-800 mb-8 text-center">Partidos disponibles</h2>
+  
+    <div id="lista-partidos" class="grid gap-8 md:grid-cols-2">
+      <!-- Aquí se insertarán los partidos -->
+    </div>
+  </main>  
+  </main>  
+  <footer class="bg-gray-100 text-gray-600 text-center text-sm py-4 mt-12">
+    © 2025 Let's Voley · Todos los derechos reservados
+  </footer>  
+  <script>
+  async function cargarPartidos() {
+  const res = await fetch('http://127.0.0.1:8000/listar-partidos');
+  const partidos = await res.json();
+  const contenedor = document.getElementById('lista-partidos');
+
+  console.log('Partidos recibidos:', partidos);
+
+  contenedor.innerHTML = '';
+
+  const usuario = JSON.parse(localStorage.getItem('usuario'));
+
+  partidos.forEach((partido, index) => {
+    const div = document.createElement('div');
+    div.className = 'p-6 border-l-4 border-cyan-400 rounded-lg shadow-md bg-blue-50 transform transition hover:scale-105 hover:shadow-xl';
+
+    let eliminarBoton = '';
+
+    if (usuario && partido.creador && partido.creador === usuario.email) {
+      eliminarBoton = `
+        <div class="mt-4 flex justify-end">
+          <button onclick="eliminarPartido(${index})" class="bg-orange-400 hover:bg-orange-500 text-white text-sm px-5 py-2 rounded-full shadow transition">
+            Eliminar
+          </button>
+        </div>
+      `;
+    }
+
+    div.innerHTML = `
+      <div class="flex flex-col h-full justify-between">
+        <div>
+          <h3 class="text-2xl font-bold text-blue-700 mb-2">${partido.lugar}</h3>
+          <p class="text-gray-600 text-sm">${partido.fecha} a las ${partido.hora}</p>
+          <p class="text-gray-700 text-sm mt-1">Nivel: <span class="font-semibold">${partido.nivel}</span></p>
+          ${partido.comentario ? `<p class="text-gray-500 text-sm italic mt-2">"${partido.comentario}"</p>` : ''}
+        </div>
+        ${eliminarBoton}
+      </div>
+    `;
+
+    contenedor.appendChild(div); // <-- ✅ Sólo añadir aquí, sin más llamadas
+  });
+}
+
+    </script>
+    <script>
+      cargarPartidos();  // <-- llamado final
+    </script>
+             
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Partido - Let's Voley</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="min-h-screen bg-gradient-to-b from-cyan-200 via-cyan-100 to-orange-50 font-sans flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-cyan-400 text-white py-4 px-8 flex justify-between items-center shadow-lg">
+    <div class="flex items-center space-x-3">
+      <span class="text-3xl">🏐</span>
+      <h1 class="text-2xl font-bold">Let's Voley</h1>
+    </div>
+    <nav class="space-x-8 text-lg">
+      <a href="partidos.html" class="hover:underline">Partidos</a>
+      <a href="jugadores.html" class="hover:underline">Jugadores</a>
+      <a href="perfil.html" class="hover:underline">Mi Perfil</a>
+    </nav>
+  </header>
+
+  <!-- Formulario Crear Partido -->
+  <main class="flex-grow flex items-center justify-center p-8">
+    <div class="bg-white bg-opacity-70 p-8 rounded-2xl shadow-xl w-full max-w-lg">
+      <h2 class="text-3xl font-bold text-center text-blue-800 mb-6">Crear nuevo partido</h2>
+
+      <form id="form-partido" class="space-y-4">
+        <input type="text" name="lugar" placeholder="Lugar (ej: Playa de Palma)" required class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+        <input type="date" name="fecha" required class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+        <input type="time" name="hora" required class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+        <select name="nivel" required class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+          <option value="">Nivel</option>
+          <option>Principiante</option>
+          <option>Intermedio</option>
+          <option>Avanzado</option>
+        </select>
+        <textarea name="comentario" placeholder="Comentario adicional..." class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-400" rows="3"></textarea>
+
+        <button type="submit" class="w-full bg-orange-400 hover:bg-orange-500 text-white font-semibold py-3 rounded-full shadow transition">
+          Crear partido
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 text-gray-600 text-center text-sm py-4 mt-12">
+    © 2025 Let's Voley · Todos los derechos reservados
+  </footer>
+
+  <!-- Script para enviar formulario -->
+  <script>
+    document.getElementById("form-partido").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(e.target);
+
+  // Añadir el email del usuario logeado
+  const usuario = JSON.parse(localStorage.getItem('usuario'));
+  formData.append("creador", usuario.email);
+
+  const response = await fetch("http://127.0.0.1:8000/crear-partido", {
+    method: "POST",
+    body: formData
+  });
+
+  const result = await response.json();
+  alert(result.mensaje || "Partido creado exitosamente");
+  e.target.reset();
+});
+  </script>
+  <script>
+  // Verificamos si existe el usuario en localStorage
+  if (!localStorage.getItem('usuario')) {
+    alert("Debes iniciar sesión para crear un partido.");
+    window.location.href = "perfil.html"; // Redirige a perfil
+  }
+  </script>
+</body>
+</html>

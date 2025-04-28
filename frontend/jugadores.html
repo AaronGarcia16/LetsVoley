@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buscar Jugadores - Let's Voley</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="min-h-screen bg-gradient-to-b from-cyan-200 via-cyan-100 to-orange-50 font-sans flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-cyan-400 text-white py-4 px-8 flex justify-between items-center shadow-lg">
+    <div class="flex items-center space-x-3">
+      <span class="text-3xl">🏐</span>
+      <h1 class="text-2xl font-bold">Let's Voley</h1>
+    </div>
+    <nav class="space-x-8 text-lg">
+      <a href="partidos.html" class="hover:underline">Partidos</a>
+      <a href="jugadores.html" class="hover:underline">Jugadores</a>
+      <a href="perfil.html" class="hover:underline">Mi Perfil</a>
+    </nav>
+  </header>
+
+  <!-- Listado de jugadores -->
+  <main class="flex-grow p-8 max-w-6xl mx-auto bg-white bg-opacity-70 rounded-2xl shadow-xl mt-12">
+    <h2 class="text-4xl font-bold text-blue-800 mb-8 text-center">Jugadores disponibles</h2>
+
+    <div id="lista-jugadores" class="grid md:grid-cols-2 gap-8">
+      <!-- Aquí aparecerán los jugadores -->
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 text-gray-600 text-center text-sm py-4 mt-12">
+    © 2025 Let's Voley · Todos los derechos reservados
+  </footer>
+
+  <!-- Script para cargar jugadores -->
+  <script>
+    async function cargarJugadores() {
+      // De momento usamos datos de ejemplo
+      const jugadores = [
+        { nombre: "Lucía R.", nivel: "Avanzado", ubicacion: "Palma" },
+        { nombre: "Carlos M.", nivel: "Intermedio", ubicacion: "Inca" },
+        { nombre: "María T.", nivel: "Principiante", ubicacion: "Alcúdia" },
+        { nombre: "Javier G.", nivel: "Avanzado", ubicacion: "Manacor" }
+      ];
+
+      const contenedor = document.getElementById('lista-jugadores');
+      contenedor.innerHTML = '';
+
+      jugadores.forEach(jugador => {
+        const div = document.createElement('div');
+        div.className = 'p-6 border-l-4 border-cyan-400 rounded-lg shadow-md bg-blue-50 transform transition hover:scale-105 hover:shadow-xl';
+        div.innerHTML = `
+          <div class="flex flex-col h-full justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-blue-700 mb-2">${jugador.nombre}</h3>
+              <p class="text-gray-600 text-sm">Ubicación: ${jugador.ubicacion}</p>
+              <p class="text-gray-700 text-sm mt-1">Nivel: <span class="font-semibold">${jugador.nivel}</span></p>
+            </div>
+          </div>
+        `;
+        contenedor.appendChild(div);
+      });
+    }
+
+    cargarJugadores();
+  </script>
+
+</body>
+</html>

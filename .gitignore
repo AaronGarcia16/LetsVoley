@@ -1,0 +1,35 @@
+# Carpeta del entorno virtual de Python
+env/
+
+# Archivos de Python compilados
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Base de datos temporal
+*.db
+*.sqlite3
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# node_modules de npm
+node_modules/
+
+# Archivos de salida de TailwindCSS
+frontend/css/styles.css
+
+# Otros
+.vscode/
+.idea/
+*.log
+
+# Sistema operativo
+*.swp
+*.swo
+
+# Archivos ocultos que no necesitas subir
+.env
+*.bak
